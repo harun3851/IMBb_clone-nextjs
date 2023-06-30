@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function page() {
   return (
-    <div className="max-w-6xl mx-auto space-x-4 px-4">
-      <h1 className="text-2x font-medium text-amber-600">About</h1>
+    <div className="max-w-6xl mx-auto space-x-4 p-4">
+      <h1 className="text-2x font-medium text-amber-600 p-4">About</h1>
       <p>
 Welcome to our captivating film website! Here, 
 we celebrate the magic of cinema and provide a platform for all movie enthusiasts.
