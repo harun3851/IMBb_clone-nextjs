@@ -1,19 +1,28 @@
-import React from 'react'
+export const dynamic = "force-dynamic"; // this is the fix
 
-export default function page() {
-  return (
-    <div className="max-w-6xl mx-auto space-x-4 p-4">
-      <h1 className="text-2x font-medium text-amber-600 p-4">About</h1>
-      <p>
-Welcome to our captivating film website! Here, 
-we celebrate the magic of cinema and provide a platform for all movie enthusiasts.
- Immerse yourself in a world of cinematic wonders as we explore the art of storytelling, 
- the power of visual aesthetics, and the impact of unforgettable performances. From classic 
- masterpieces to cutting-edge indie gems, we offer a diverse selection of film reviews, 
- thought-provoking articles, and exclusive interviews with industry insiders. Join our 
- passionate community, share your thoughts, and discover new perspectives on the silver
-  screen. Let us guide you on an unforgettable journey through the realm of cinema, where dreams come alive
-</p>
-    </div>
-  )
+import Results from "@/components/Results";
+
+const API_KEY = process.env.API_KEY;
+
+export default async function Home({ searchParams }) {
+  const genre = searchParams.genre || "fetchTrending";
+
+  const res = await fetch(
+    `https://api.themoviedb.org/3/${
+      genre === "fetchTopRated" ? "movie/top_rated" : "trending/all/week"
+    }?api_key=${API_KEY}&language=en-US&page=1`,
+    { next: { revalidate: 10000 } }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data"); // this will be caught by the error page and passed to the page as props
+  }
+
+  const data = await res.json();
+
+  const results = data.results;
+  console.log(results);
+
+  return  <div> <Results results={results} /></div>
+ 
 }
